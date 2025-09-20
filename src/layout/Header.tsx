@@ -1,6 +1,6 @@
-import LogoSection from '../components/header/LogoSection'
+import LogoSection from '../components/LogoSection'
 import PrimaryNavigation from "./PrimaryNavigation"
-import LoginInfo from "../components/header/LoginInfo"
+import LoginInfo from "../components/LoginInfo"
 
 export default function Header() {
     return (

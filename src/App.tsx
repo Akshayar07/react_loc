@@ -6,14 +6,12 @@ import Expansion from './pages/Expansion/Expansion'
 
 function App() {
   return (
-
     <Router>
       <Routes>
-        <Route path='/sdfsdkj' element={<LettersOfCredit />} />
-        <Route path='/' element={<Expansion/>} />
+        <Route path='/' element={<LettersOfCredit />} />
+        <Route path='/expansion' element={<Expansion />} />
       </Routes>
     </Router>
-
   )
 }
 

@@ -1,8 +1,8 @@
 
-interface SliderProps { value: number , className?: string }
+interface SliderProps { value: number, className?: string }
 
 
-const Slider: React.FC<SliderProps> = ({ value, className }) => {
+const CustomSlider: React.FC<SliderProps> = ({ value, className }) => {
     return (
         <div className={`${className}`}>
             <div>{value.toFixed(0)}%</div>
@@ -13,4 +13,4 @@ const Slider: React.FC<SliderProps> = ({ value, className }) => {
     )
 
 }
-export default Slider
+export default CustomSlider

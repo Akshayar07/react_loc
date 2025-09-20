@@ -37,43 +37,46 @@ function ExpandableRow({ row }: { row: ParentRow }) {
         <>
             {/* Main row */}
             <TableRow onClick={() => setOpen(!open)} className="hover:bg-gray-50">
-                <TableCell>
-                    {/* <IconButton size="small" onClick={() => setOpen(!open)}>
-                        {open ? <FaStar /> : <FaStar />}
-                    </IconButton> */}
-                    <div className="flex flex-row gap-2 items-center bg-blue-900">
-                        <FaAngleDown></FaAngleDown>
-                        <div className="bg-gray-900 rounded-full w-6 h-6 flex items-center justify-center text-white">A</div>
-                        <h1>
-                            Akshaya
-                        </h1>
-                        <FaStar className="text-yellow-500"></FaStar>
-                    </div>
-                </TableCell>
+                <TableCell><h1>Akshaya</h1> </TableCell>
                 <TableCell>{row.col1}</TableCell>
                 <TableCell>{row.col2}</TableCell>
                 <TableCell>{row.col3}</TableCell>
                 <TableCell>{row.col4}</TableCell>
                 {/* <TableCell>{row.col5}</TableCell> */}
             </TableRow>
-
             {/* Expansion: Child rows aligned with same columns */}
-            <TableRow>
-                <TableCell colSpan={6} >
+            <TableRow >
+                <TableCell colSpan={12} >
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Table>
-                            <TableBody>
-                                {row.children.map((child, i) => (
-                                    <TableRow key={i} className="bg-gray-100">
-                                        <TableCell>{child.col1}</TableCell>
-                                        <TableCell>{child.col2}</TableCell>
-                                        <TableCell>{child.col3}</TableCell>
-                                        <TableCell>{child.col4}</TableCell>
-                                        <TableCell>{child.col5}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                        <div>
+                            <div className="grid grid-cols-5 w-full ">
+                                <div>
+                                    <h1>
+                                        Akshaya
+                                    </h1>
+                                </div>
+                                <div>
+                                    <h1>
+                                        Multiple
+                                    </h1>
+                                </div>
+                                <div>
+                                    <h1>
+                                        Multiple
+                                    </h1>
+                                </div>
+                                <div>
+                                    <h1>
+                                        Multiple
+                                    </h1>
+                                </div>
+                                <div>
+                                    <h1>
+                                        Multiple
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
                     </Collapse>
                 </TableCell>
             </TableRow>

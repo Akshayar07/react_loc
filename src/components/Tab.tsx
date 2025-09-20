@@ -13,7 +13,7 @@ interface TabProps {
     onClick?: (selected: string) => void
 }
 
-const Tab: React.FC<TabProps> = ({ options, onClick, defaultValue, className }) => {
+const CustomTab: React.FC<TabProps> = ({ options, onClick, defaultValue, className }) => {
     const [activeTab, setactiveTab] = useState(defaultValue || '');
     function handleSelection(value: string) {
         setactiveTab(value);
@@ -34,4 +34,4 @@ const Tab: React.FC<TabProps> = ({ options, onClick, defaultValue, className }) 
 
     )
 }
-export default Tab
+export default CustomTab

@@ -13,7 +13,7 @@ interface StepperProps {
 
 
 
-const Stepper: React.FC<StepperProps> = ({ steps, value, onChange }) => {
+const CustomStepper: React.FC<StepperProps> = ({ steps, value, onChange }) => {
     // const lastStep = steps.length
     return (
         <ul>
@@ -37,6 +37,6 @@ const Stepper: React.FC<StepperProps> = ({ steps, value, onChange }) => {
     )
 }
 
-export default Stepper
+export default CustomStepper
 
 

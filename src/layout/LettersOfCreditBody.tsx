@@ -1,31 +1,26 @@
 import { useState } from "react";
-import Slider from "../components/header/Slider";
-import Tab from "../components/header/Tab";
-import Stepper from "../components/header/WizardForm";
-import FormTextField from "../components/header/FormTextField";
-import GridCheckBoxGroup from "../components/header/GridCheckBoxGroup";
-import SegmentedButtons from "../components/header/SegmentedButtons";
-import GridRadioButton from "../components/header/GridRadioButton";
-import SubmitButton from "../components/header/SubmitButton";
-import { Switch } from "@mui/material";
-import Footer from "./Footer";
 import { tabOptions } from "../constants/TabOption";
 import { steps } from "../constants/StepperStep";
 import { formTypeoptions } from "../constants/FormTypeoptions";
 import { featureLcOptions } from "../constants/FeatureLcOptions";
 import { confirmationInstructionOption } from "../constants/ConfirmationInstructionOption";
-
-
-
-
-
-
-
-
+import { Switch } from "@mui/material";
+import Footer from "./Footer";
+import FormTextField from "../components/FormTextField";
+import GridCheckBoxGroup from "../components/GridCheckBoxGroup";
+import GridRadioButton from "../components/GridRadioButton";
+import SegmentedButtons from "../components/SegmentedButtons";
+import SubmitButton from "../components/SubmitButton";
+import CustomTab from "../components/Tab";
+import CustomStepper from "../components/WizardForm";
+import CustomSlider from "../components/Slider";
+import CustomDropDown from "../components/CustomDropDown";
+import { LcType } from "../constants/LcTypeOption";
 
 export default function LettersOfCreditBody() {
 
     const [currentStep, setCurrentStep] = useState(0);
+    const [errors, setErrors] = useState<FormErrors>({})
     const percent = ((currentStep) / steps.length) * 100;
     const [formData, setFormData] = useState({
         requestType: false,
@@ -40,11 +35,64 @@ export default function LettersOfCreditBody() {
         PurchaseOrder: "",
     });
 
+    type FormErrors = {
+        requiryDate?: string,
+        expiryDate?: string,
+        placeOfExpiry?: string,
+        createFormType?: string,
+        lcType?: string,
+        featureOfLc?: string[],
+        confirmationInstruction?: string,
+        BeneficiaryReference?: string,
+        CustomerReference?: string,
+        PurchaseOrder?: string,
+    }
+
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         console.log(e);
         console.log(formData);
+        if (!Validation()) return
         setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
+
+    }
+
+    const Validation = () => {
+        const newErrors: FormErrors = {};
+        if (!formData.expiryDate.trim()) {
+            newErrors.expiryDate = "must enter Expiry Date";
+        }
+        if (!formData.placeOfExpiry.trim()) {
+            newErrors.placeOfExpiry = "must enter Place of Expiry";
+        }
+        if (!formData.lcType.trim()) {
+            newErrors.lcType = "must enter Lc Type";
+        }
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0
+
+    }
+
+
+    const ValidateField = (name: keyof typeof formData, value: string | Boolean) => {
+        let message = "";
+
+        if (name === "expiryDate" && !String(value).trim()) {
+            if (!value) {
+                message = "must enter Expiry Date";
+            }
+        }
+        if (name === "placeOfExpiry" && !String(value).trim()) {
+            if (!value) {
+                message = "must enter Place of Expiry";
+            }
+        }
+        if (name === "lcType" && !String(value).trim()) {
+            if (!value) {
+                message = "must enter Lc Type";
+            }
+        }
+        setErrors(prevErrors => ({ ...prevErrors, [name]: message }))
     }
 
 
@@ -53,12 +101,9 @@ export default function LettersOfCreditBody() {
             {/* Left side */}
             <div className="size-[30%]">
                 <h1 className="text-md font-medium text-gray-500 mb-10">Letters of Credit Initiation</h1>
-                {/* Tab */}
-                <Tab className="mb-10" options={tabOptions} defaultValue="Sections" onClick={(selected) => console.log(selected)} />
-                {/* Slider */}
-                <Slider className="mb-10" value={percent} />
-                {/* stepper */}
-                <Stepper
+                <CustomTab className="mb-10" options={tabOptions} defaultValue="Sections" onClick={(selected) => console.log(selected)} />
+                <CustomSlider className="mb-10" value={percent} />
+                <CustomStepper
                     steps={steps}
                     value={currentStep}
                     onChange={setCurrentStep}
@@ -73,6 +118,7 @@ export default function LettersOfCreditBody() {
                     </div>
                     <div >
                         {/* generalDetails */}
+
                         {steps[currentStep].value === "generalDetails" &&
                             <div className="bg-gray-100 p-10 mt-8">
                                 <h1 className="text-lg font-medium  mb-5">General Details</h1>
@@ -92,27 +138,40 @@ export default function LettersOfCreditBody() {
                                     onClick={(selected) => setFormData({ ...formData, createFormType: selected })}
                                 />
                                 <div className="grid grid-cols-2 gap-10 mb-10">
-                                    <FormTextField
-                                        type="date"
-                                        required
-                                        placeHolder="Expiry Date"
-                                        value={formData.expiryDate}
-                                        onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
-                                    />
-                                    <FormTextField
-                                        type="text"
-                                        required
-                                        placeHolder="Place of Expiry"
-                                        value={formData.placeOfExpiry}
-                                        onChange={(e) => setFormData({ ...formData, placeOfExpiry: e.target.value })}
-                                    />
-                                    <FormTextField
-                                        type="text"
-                                        required
-                                        placeHolder="LC Type"
-                                        value={formData.lcType}
-                                        onChange={(e) => setFormData({ ...formData, lcType: e.target.value })}
-                                    />
+                                    <div>
+                                        <FormTextField
+                                            type="date"
+                                            onBlur={(e) => ValidateField("expiryDate", e.target.value)}
+                                            error={!!errors.expiryDate}
+                                            placeHolder="Expiry Date"
+                                            value={formData.expiryDate}
+                                            onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
+                                        />
+                                        {errors.expiryDate && <span className="text-red-500">{`Error: ${errors.expiryDate}`}</span>}
+                                    </div>
+                                    <div>
+                                        <FormTextField
+                                            type="text"
+                                            onBlur={(e) => ValidateField("placeOfExpiry", e.target.value)}
+                                            error={!!errors.placeOfExpiry}
+                                            placeHolder="Place of Expiry"
+                                            value={formData.placeOfExpiry}
+                                            onChange={(e) => setFormData({ ...formData, placeOfExpiry: e.target.value })}
+                                        />
+                                        {errors.placeOfExpiry && <span className="text-red-500">{`Error: ${errors.placeOfExpiry}`}</span>}
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <CustomDropDown
+                                                label="LC Type"
+                                                value={formData.lcType}
+                                                error={!!errors.lcType}
+                                                onChange={(e) => setFormData({ ...formData, lcType: e.target.value })}
+                                                onBlur={(e) => ValidateField("lcType", e.target.value)} options={LcType}
+                                            ></CustomDropDown>
+                                        </div>
+                                        {errors.lcType && <span className="text-red-500">{`Error: ${errors.lcType}`}</span>}
+                                    </div>
                                 </div>
                                 <h1 className="text-sm font-medium mb-5 ">Feature of LC</h1>
                                 {/* Feature LC checkbox */}
@@ -152,6 +211,8 @@ export default function LettersOfCreditBody() {
                                 </div>
                             </div>
                         }
+
+
                         {steps[currentStep].value === "applicantBeneficiaryDetails" && <h1>Applicant and Beneficiary Details</h1>}
                         {steps[currentStep].value === "bankDetails" && <h1>Bank Details</h1>}
                         {steps[currentStep].value === "amountChargeDetails" && <h1>Amount and Charge Details</h1>}

@@ -9,6 +9,8 @@ interface TextFieldProps {
     required?: boolean;
     defaultValue?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    error?: boolean;
     className?: string;
 }
 
@@ -18,7 +20,9 @@ const FormTextField: React.FC<TextFieldProps> = ({
     type = "text",
     value,
     onChange,
+    onBlur,
     required = false,
+    error = false,
     className = "",
 }) => {
     return (
@@ -29,21 +33,15 @@ const FormTextField: React.FC<TextFieldProps> = ({
                 required={required}
                 defaultValue={value === undefined ? "" : undefined}
                 onChange={onChange}
+                onBlur={onBlur}
                 fullWidth
-                InputLabelProps={{shrink:true}}
+                error={error}
+                InputLabelProps={{ shrink: true }}
                 value={value !== undefined ? value : undefined}
-                className={`border border-gray-600 rounded-sm  bg-transparent placeholder:text-gray-400 ${className}`}
-                ></TextField>
-                {label && <label key={label}>{label}</label>}
-            {/* <input
-                required={required}
-                type={type}
-                value={value !== undefined ? value : undefined}
-                defaultValue={value === undefined ? "" : undefined}
-                onChange={onChange}
-                placeholder={required ? `${placeHolder} *` : placeHolder}
-                className={`w-full border border-gray-600 rounded-sm h-50 size-[50px] px-2 bg-transparent placeholder:text-gray-400 ${className}`}
-            /> */}
+                className={` border border-gray-600 rounded-sm  bg-transparent placeholder:text-gray-400 ${className}`}
+            ></TextField>
+            {label && <label key={label}>{label}</label>}
+
         </div>
     );
 };
