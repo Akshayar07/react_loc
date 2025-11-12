@@ -58,12 +58,23 @@ export default function LettersOfCreditBody() {
     }
 
     const Validation = () => {
+
+        const min = 5
+        const max = 10
+        const regex = /^[A-Za-z]+$/;
+
         const newErrors: FormErrors = {};
         if (!formData.expiryDate.trim()) {
             newErrors.expiryDate = "must enter Expiry Date";
         }
         if (!formData.placeOfExpiry.trim()) {
             newErrors.placeOfExpiry = "must enter Place of Expiry";
+        }
+        else if (formData.placeOfExpiry.length < min || formData.placeOfExpiry.length > max) {
+            newErrors.placeOfExpiry = `Must be between ${min} and ${max} characters`;
+        }
+        else if (!regex.test(formData.placeOfExpiry)) {
+            newErrors.placeOfExpiry = "Only Alphabets are allowed";
         }
         if (!formData.lcType.trim()) {
             newErrors.lcType = "must enter Lc Type";
@@ -118,7 +129,6 @@ export default function LettersOfCreditBody() {
                     </div>
                     <div >
                         {/* generalDetails */}
-
                         {steps[currentStep].value === "generalDetails" &&
                             <div className="bg-gray-100 p-10 mt-8">
                                 <h1 className="text-lg font-medium  mb-5">General Details</h1>
@@ -126,9 +136,7 @@ export default function LettersOfCreditBody() {
                                 <div className="flex flex-row items-center gap-3 mb-5">
                                     <Switch
                                         checked={formData.requestType}
-                                        onChange={(e) =>
-                                            setFormData({ ...formData, requestType: e.target.checked })
-                                        }
+                                        onChange={(e) => setFormData({ ...formData, requestType: e.target.checked })}
                                     ></Switch>
                                     <p className="text-sm ">Do you want to preview a Draft LC?</p>
                                 </div>
@@ -211,8 +219,6 @@ export default function LettersOfCreditBody() {
                                 </div>
                             </div>
                         }
-
-
                         {steps[currentStep].value === "applicantBeneficiaryDetails" && <h1>Applicant and Beneficiary Details</h1>}
                         {steps[currentStep].value === "bankDetails" && <h1>Bank Details</h1>}
                         {steps[currentStep].value === "amountChargeDetails" && <h1>Amount and Charge Details</h1>}

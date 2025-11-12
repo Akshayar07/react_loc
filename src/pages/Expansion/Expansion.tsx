@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Table,
     TableBody,
@@ -7,10 +7,8 @@ import {
     TableHead,
     TableRow,
     Paper,
-    IconButton,
     Collapse,
 } from "@mui/material";
-import { FaAngleDown, FaStar } from "react-icons/fa";
 
 interface ChildRow {
     col1: string;
